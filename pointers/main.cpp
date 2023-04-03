@@ -12,22 +12,22 @@ void make_sentient(HolmesIV*);
 void make_sentient(HolmesIV&);
 
 int main() {
-    HolmesIV john;
+    HolmesIV H1;
 
-    HolmesIV *mike = &john;
+    HolmesIV *mike = &H1;
 
     make_sentient(*mike);
     
     std::cout << "Made sentient :" << mike->is_sentient <<std::endl;
 
-    make_sentient(&john);
-    std::cout << "Made sentient :" << mike->is_sentient << std::endl;
+    make_sentient(mike);
+    std::cout << "Made sentient :" << H1.is_sentient << std::endl;
 }
 
 void make_sentient(HolmesIV* mike){
-    mike ->is_sentient = true;
+    mike ->is_sentient = false;
 }
 
 void make_sentient(HolmesIV& mike){
-    mike.is_sentient = false;
+    mike.is_sentient = true;
 }
