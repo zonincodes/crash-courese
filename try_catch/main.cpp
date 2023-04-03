@@ -1,10 +1,11 @@
 #include <iostream>
 
-using namespace std;
 
 #include <system_error>
 #include <cstdio>
 #include <cstring>
+using namespace std;
+#include <memory>
 
 struct File {
     File(const char* path, bool write)
@@ -22,6 +23,18 @@ struct File {
     FILE *file_pointer;
 };
 
+struct Foundation 
+{
+    const char* founder;
+};
+
+struct Mutant
+{
+    // Constructor sets foundation appropriately:
+    Mutant(unique_ptr<Foundation> foundation) : foundation(move(foundation)){}
+
+    unique_ptr<Foundation> foundation;
+};
 
 int main()
 {
@@ -37,5 +50,13 @@ int main()
         char read_message[37]{};
         fread(read_message, sizeof(read_message), 1, file.file_pointer);
         printf("Read last message: %s\n", read_message);
+    }
+
+    {
+        unique_ptr<Foundation> second_foundation{ new Foundation{} };
+        // use second_foundation
+        Mutant the_mule{move(second_foundation)};
+        // second_foundation is in a moved from state
+        // the_mule owns the Foundation
     }
 }
