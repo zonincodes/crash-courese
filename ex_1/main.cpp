@@ -72,4 +72,10 @@ int main() {
     printf("\n*****************  handling decay ***************** \n");
     College oxford[] = {"Magdalen", "Nuffield", "Kellogg"};
     print_names(oxford, sizeof(oxford)/ sizeof(College));
+
+    printf("\n***************** Pointer Arithmetic  ***************** \n");
+    College* third_college_ptr = &oxford[2]; 
+    College* third_college_ptr_arithmetic = oxford + 2; 
+
+    printf("%s direct access. \n%s indirect access\n", third_college_ptr -> name, third_college_ptr_arithmetic -> name);
 }
