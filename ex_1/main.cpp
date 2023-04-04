@@ -46,4 +46,13 @@ int main() {
     *gettyburg_address = 124; // derefence operator
     printf("Value at gettysburg_address: %d\n", *gettyburg_address);
     printf("Gettysburg Address: %p\n", gettyburg_address);
+
+    // 
+    ClockOfTheLongNow clock;
+    ClockOfTheLongNow* clock_ptr = &clock;
+
+    clock_ptr ->set_year(2020);
+    printf("Address of cloack: %p\n", clock_ptr);
+    printf("Value of clock's year: %d\n", clock_ptr->get_year());
+    printf("Value of clock's year: %d derefence\n", (*clock_ptr).get_year());
 }
