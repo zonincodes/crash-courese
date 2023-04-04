@@ -36,6 +36,18 @@ struct ClockOfTheLongNow{
         int year;
 };
 
+struct College{
+    char name[256];
+};
+
+void print_names(College *colleges, size_t n_colleges)
+{
+    for(size_t i =0; i < n_colleges; i++)
+    {
+        printf("%s College\n", colleges[i].name);
+    }
+}
+
 int main() {
     int gettyburg{};
     int* gettyburg_address = &gettyburg;
@@ -55,4 +67,9 @@ int main() {
     printf("Address of cloack: %p\n", clock_ptr);
     printf("Value of clock's year: %d\n", clock_ptr->get_year());
     printf("Value of clock's year: %d derefence\n", (*clock_ptr).get_year());
+
+    // Handling decay
+    printf("\n*****************  handling decay ***************** \n");
+    College oxford[] = {"Magdalen", "Nuffield", "Kellogg"};
+    print_names(oxford, sizeof(oxford)/ sizeof(College));
 }
