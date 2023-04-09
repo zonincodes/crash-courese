@@ -8,3 +8,26 @@ struct type-name{
     }
 }
 */
+
+//  a counting example
+#include <cstdio>
+#include <cstdint>
+
+struct CountIf{
+    CountIf(char x) :  x{x}{}
+    size_t operator()(const char* str) const {
+        size_t index{}, result{};
+
+        while (str[index])
+        {
+            if(str[index] == x) result++;
+            index++;
+        }
+        return result;
+        
+    }
+
+
+    private:
+        const char x;
+};
