@@ -31,3 +31,18 @@ struct CountIf{
     private:
         const char x;
 };
+
+int main()
+{
+
+    CountIf s_counter{'s'};
+    auto sally = s_counter("Sally sells seashells at the seashore.");
+    printf("Sally: %zd\n", sally);
+
+    auto sailor  = s_counter("Sailor went to sea to see what he could see.");
+    printf("Sailors: %zd\n", sailor);
+
+    auto buffalo = CountIf{'f'}("Buffalo buffalo buffalo buffalo buffalo buffalo buffalo ");
+    printf("Buffalo: %zd\n", buffalo);
+    return 0;
+}
