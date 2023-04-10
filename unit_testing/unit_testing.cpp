@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <stdexcept>
-#include <cstdint>
+#include <funtional>
 struct SpeedUpdate
 {
     double velocity_mps;
@@ -16,7 +16,14 @@ struct BrakeCommand{
     double time_to_collision_s;
 };
 
-
+using SpeedUpdateCallback = std::function<void(const SpeedUpdate)>;
+using CarDetectedCallback = std::function<void(const CarDetected)>;
+struct ISeriviceBus {
+    virtual ~IServiceBus() = default;
+    virtual void publish(const BrakeCommand&) = 0;
+    virtual void subscribe(SpeedUpdateCallback) = 0;
+    virtual void subscribe(CarDetectedCallback) = 0;
+}
 struct ServiceBus
 {
     void publish(const BrakeCommand&);
