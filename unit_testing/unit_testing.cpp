@@ -61,16 +61,6 @@ struct AutoBrake
         });
     }
 
-    
-    // void observe(const CarDetected& cd) {
-    //     const auto relative_velocity_mps = speed_mps - cd.velocity_mps;
-    //     const auto time_to_collison_s = cd.distance_m / relative_velocity_mps;
-
-    //     if(time_to_collison_s > 0 && 
-    //         time_to_collison_s <= collision_threshold_s){
-    //         publish(BrakeCommand{time_to_collison_s});
-    //     }
-    // }
 
     void set_collision_threshold_s(double x){
         if(x < 1) throw std::runtime_error{"Collision less than 1."};
