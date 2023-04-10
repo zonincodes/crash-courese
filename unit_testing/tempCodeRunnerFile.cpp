@@ -1,5 +1,3 @@
-while(true)
-    // {
-    //     auto_brake.observe(SpeedUpdate{10L});
-    //     auto_brake.observe(CarDetected{250L, 25L});
-    // }
+void observe(const SpeedUpdate& cd) {
+        speed_mps = cd.velocity_mps;
+    }
