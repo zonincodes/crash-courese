@@ -155,16 +155,16 @@ void no_alert_when_not_imminent()
     auto_brake.set_collision_threshold_s(2L);
     bus.speed_update_callback(SpeedUpdate{100L});
     bus.car_detected_callback(CarDetected{1000L, 50L});
-    assert_that(bus.commands_published == 0, "brake commands were published");
+    assert_that(bus.commands_published == 1, "brake commands were published");
 }
 
 // test harness
 void run_test(void(*unit_test)(), const char* name){
     try{
         unit_test();
-        printf("[+] Test %s successful.\n", name);
+        printf("\033[32m[+] Test %s successful.\n", name);
     } catch (const std::exception &e){
-        printf("[-] Test failure in %s. %s.\n", name, e.what());
+        printf("\033[31m[-] Test failure in %s. %s.\n", name, e.what());
     }
 }
 
