@@ -37,6 +37,10 @@ struct AutoBrake
         return speed_mps;
     }
 
+    double get_collision_threshold_s(){
+        return collision_threshold_s;
+    }
+
     private:
         const T& publish;
         double collision_threshold_s;
@@ -47,11 +51,19 @@ const void assert_that(bool statement, const char* message)
 {
     if(!statement) throw std::runtime_error{message};
 }
-
+//  requirement initial speed is zero
 void initial_speed_is_xero(){
     AutoBrake auto_brake{[](const BrakeCommand&){}};
     assert_that(auto_brake.get_speed_mps() == 0L, "speed not equal 0");
 }
+
+// requiremnt: Default Collision Threshold is Five
+void initial_seinstivity_is_five()
+{
+    AutoBrake auto_brake{[](const BrakeCommand&){}};
+    assert_that(auto_brake.get_collision_threshold_s() == 5L, "sensitivity is not 5");
+}
+
 
 // test harness
 void run_test(void(*unit_test)(), const char* name){
@@ -73,6 +85,9 @@ int main() {
     //     auto_brake.observe(CarDetected{250L, 25L});
     // }
 
-    assert_that(1 + 2 > 2, "Something is profoundly wrong wit the universe.");
-    assert_that(24 == 42, "This assertion will generate an exception");
+    // assert_that(1 + 2 > 2, "Something is profoundly wrong wit the universe.");
+    // assert_that(24 == 42, "This assertion will generate an exception");
+
+    run_test(initial_speed_is_xero, "initial speed is 0");
+    run_test(initial_seinstivity_is_five, "initial sensitivity is 5");
 }
