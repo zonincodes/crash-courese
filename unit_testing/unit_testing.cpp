@@ -144,8 +144,19 @@ void alert_when_imminent() {
     bus.speed_update_callback(SpeedUpdate{100L});
     bus.car_detected_callback(CarDetected{100L, 0L});
     assert_that(bus.commands_published == 1, "brake commands published not one");
+    assert_that(bus.last_command.time_to_collision_s== 1L, "time to collision not computed correctly.");
 }
 
+void no_alert_when_not_imminent()
+{
+    MockServiceBus bus{};
+    AutoBrake auto_brake{bus};
+
+    auto_brake.set_collision_threshold_s(2L);
+    bus.speed_update_callback(SpeedUpdate{100L});
+    bus.car_detected_callback(CarDetected{1000L, 50L});
+    assert_that(bus.commands_published == 0, "brake commands were published");
+}
 
 // test harness
 void run_test(void(*unit_test)(), const char* name){
@@ -163,4 +174,5 @@ int main() {
     run_test(sensitivity_greater_than_1, "sensitivity greater than 1");
     run_test(speed_is_saved, "speed is saved");
     run_test(alert_when_imminent, "alert when imminent");
+    run_test(no_alert_when_not_imminent, "no alert when not imminent");
 }
