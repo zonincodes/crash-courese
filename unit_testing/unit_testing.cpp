@@ -25,12 +25,15 @@ struct ServiceBus
 template <typename T>
 struct AutoBrake
 {
-    AutoBrake(const T &publish) : publish { publish} {}
-    void observe(const SpeedUpdate& cd) {}
+    AutoBrake(const T &publish) : collision_threshold_s{5}, speed_mps{},publish { publish} {}
+    void observe(const SpeedUpdate& cd) {
+        speed_mps = cd.velocity_mps;
+    }
     void observe(const CarDetected& cd) {}
 
     void set_collision_threshold_s(double x){
-        set_collision_threshold_s = x;
+        if(x < 1) throw std::runtime_error{"Collision less than 1."};
+        collision_threshold_s = x;
     }
 
     double get_speed_mps() const {
@@ -64,6 +67,30 @@ void initial_seinstivity_is_five()
     assert_that(auto_brake.get_collision_threshold_s() == 5L, "sensitivity is not 5");
 }
 
+// requirement: Sensitivity must always be greater than one
+void sensitivity_greater_than_1(){
+    AutoBrake auto_brake{ [](const BrakeCommand&) {}};
+    try{
+        auto_brake.set_collision_threshold_s(0.5L);
+    } catch( const std::exception&){
+        return;
+    }
+
+    assert_that(false, "no exception thrown");
+}
+
+// Requirement: Save the Car's speed Bettween Updates
+
+void speed_is_saved() {
+    AutoBrake auto_brake {[](const BrakeCommand&) {}};
+    auto_brake.observe(SpeedUpdate{100L});
+    assert_that(100L == auto_brake.get_speed_mps(), "speed not saved to 100");
+    auto_brake.observe(SpeedUpdate{ 50L });
+    assert_that(50L == auto_brake.get_speed_mps(), "speed not saved to 50");
+    auto_brake.observe(SpeedUpdate {0L});
+    assert_that(0L == auto_brake.get_speed_mps(), "speed not saved to 0");
+}
+
 
 // test harness
 void run_test(void(*unit_test)(), const char* name){
@@ -76,18 +103,8 @@ void run_test(void(*unit_test)(), const char* name){
 }
 
 int main() {
-    ServiceBus bus;
-
-    AutoBrake auto_brake{[&bus] (const auto& cmd){bus.publish(cmd);}};
-    // while(true)
-    // {
-    //     auto_brake.observe(SpeedUpdate{10L});
-    //     auto_brake.observe(CarDetected{250L, 25L});
-    // }
-
-    // assert_that(1 + 2 > 2, "Something is profoundly wrong wit the universe.");
-    // assert_that(24 == 42, "This assertion will generate an exception");
-
     run_test(initial_speed_is_xero, "initial speed is 0");
     run_test(initial_seinstivity_is_five, "initial sensitivity is 5");
+    run_test(sensitivity_greater_than_1, "sensitivity greater than 1");
+    run_test(speed_is_saved, "speed is saved");
 }
