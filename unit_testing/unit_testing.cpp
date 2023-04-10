@@ -25,12 +25,22 @@ struct ServiceBus
 template <typename T>
 struct AutoBrake
 {
-    AutoBrake(const T &publish);
-    void observe(const SpeedUpdate&);
-    void observe(const CarDetected&);
+    AutoBrake(const T &publish) : publish { publish} {}
+    void observe(const SpeedUpdate& cd) {}
+    void observe(const CarDetected& cd) {}
+
+    void set_collision_threshold_s(double x){
+        set_collision_threshold_s = x;
+    }
+
+    double get_speed_mps() const {
+        return speed_mps;
+    }
 
     private:
         const T& publish;
+        double collision_threshold_s;
+        double speed_mps;
 };
 
 int main() {
